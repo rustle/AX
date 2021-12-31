@@ -36,6 +36,23 @@ public extension AXError {
     /// If `result == .success` force unwrap `value`
     /// If `result` is a known error convert it
     @inlinable
+    func check(_ value: Any?) throws -> Any {
+        try check()
+        return value!
+    }
+    /// If `result == .success` force unwrap `value`
+    /// If `result` is a known error convert it
+    @inlinable
+    func check<V>(_ value: Any?) throws -> V {
+        try check()
+        guard let checked = value as? V else {
+            throw 🪓.Error.cannotComplete
+        }
+        return checked
+    }
+    /// If `result == .success` force unwrap `value`
+    /// If `result` is a known error convert it
+    @inlinable
     func check<V>(_ value: V?) throws -> V {
         try check()
         return value!

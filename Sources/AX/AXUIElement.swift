@@ -4,11 +4,11 @@
 //  Copyright © 2017-2021 Doug Russell. All rights reserved.
 //
 
-import ApplicationServices.HIServices
+import Cocoa
 
 @available(macOS 10.0, *)
 public extension 🪓 {
-    struct UIElement {
+    struct UIElement: CustomStringConvertible, CustomDebugStringConvertible {
 
         // MARK: Init
 
@@ -59,6 +59,57 @@ public extension 🪓 {
                                                &pid)
                 return try result.check(pid)
             }
+        }
+        public var description: String {
+            debugDescription
+        }
+        public var debugDescription: String {
+            var description = [String(describing: element)]
+            if let attrs = try? attributes(), attrs.count > 0 {
+                description.append("Attributes: \(attrs.map(\.rawValue))")
+                func append(_ prefix: String, _ attribute: NSAccessibility.Attribute) {
+                    guard attrs.contains(attribute), let value = try? value(attribute: attribute) else {
+                        return
+                    }
+                    description.append(prefix)
+                    description.append(String(describing: value))
+                }
+                append("Role:", .role)
+                append("Subrole:", .subrole)
+                append("Title:", .title)
+                append("Description:", .description)
+                append("Value:", .value)
+            }
+            return description.joined(separator: " ")
+        }
+
+        // MARK: Attributes
+
+        ///
+        ///
+        /// See also `public func AXUIElementCopyAttributeNames(_ element: AXUIElement, _ names: UnsafeMutablePointer<CFArray?>) -> AXError`
+        public func attributes() throws -> [NSAccessibility.Attribute] {
+            var attributes: CFArray?
+            let result = AXUIElementCopyAttributeNames(element,
+                                                       &attributes)
+            return try result.check(attributes)
+        }
+        ///
+        ///
+        /// See also `public func AXUIElementCopyAttributeValue(_ element: AXUIElement, _ attribute: CFString, _ value: UnsafeMutablePointer<CFTypeRef?>) -> AXError`
+        public func value(attribute: NSAccessibility.Attribute) throws -> Any {
+            var value: CFTypeRef?
+            let result = AXUIElementCopyAttributeValue(element,
+                                                       attribute as CFString,
+                                                       &value)
+            return try result.check(value)
+        }
+        public func value<V>(attribute: NSAccessibility.Attribute) throws -> V {
+            var value: CFTypeRef?
+            let result = AXUIElementCopyAttributeValue(element,
+                                                       attribute as CFString,
+                                                       &value)
+            return try result.check(value)
         }
     }
 }
