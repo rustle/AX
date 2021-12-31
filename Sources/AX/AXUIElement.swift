@@ -46,5 +46,19 @@ public extension 🪓 {
                                                           &element)
             return UIElement(element: try result.check(element))
         }
+
+        // MARK: Utility
+
+        /// Proccess identifier of application associated with receiver
+        ///
+        /// See also  `public func AXUIElementGetPid(_ element: AXUIElement, _ pid: UnsafeMutablePointer<pid_t>) -> AXError`
+        public var pid: pid_t {
+            get throws {
+                var pid: pid_t = 0
+                let result = AXUIElementGetPid(element,
+                                               &pid)
+                return try result.check(pid)
+            }
+        }
     }
 }
