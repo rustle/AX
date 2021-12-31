@@ -111,5 +111,38 @@ public extension 🪓 {
                                                        &value)
             return try result.check(value)
         }
+
+        // MARK: Parameterized Attributes
+
+        ///
+        ///
+        /// See also `public func AXUIElementCopyParameterizedAttributeNames(_ element: AXUIElement, _ names: UnsafeMutablePointer<CFArray?>) -> AXError`
+        public func parameterizedAttributes() throws -> [NSAccessibility.Attribute] {
+            var attributes: CFArray?
+            let result = AXUIElementCopyParameterizedAttributeNames(element,
+                                                                    &attributes)
+            return try result.check(attributes)
+        }
+        ///
+        ///
+        /// See also `public func AXUIElementCopyParameterizedAttributeValue(_ element: AXUIElement, _ parameterizedAttribute: CFString, _ parameter: CoreFoundation.CFTypeRef, _ result: UnsafeMutablePointer<CoreFoundation.CFTypeRef?>) -> AXError`
+        public func value(attribute: NSAccessibility.ParameterizedAttribute,
+                          parameter: Any) throws -> Any {
+            var value: CFTypeRef?
+            let result = AXUIElementCopyParameterizedAttributeValue(element,
+                                                                    attribute.rawValue as CFString,
+                                                                    parameter as CFTypeRef,
+                                                                    &value)
+            return try result.check(value)
+        }
+        public func value<V>(attribute: NSAccessibility.ParameterizedAttribute,
+                             parameter: Any) throws -> V {
+            var value: CFTypeRef?
+            let result = AXUIElementCopyParameterizedAttributeValue(element,
+                                                                    attribute.rawValue as CFString,
+                                                                    parameter as CFTypeRef,
+                                                                    &value)
+            return try result.check(value)
+        }
     }
 }
