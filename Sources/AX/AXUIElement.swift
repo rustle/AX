@@ -144,5 +144,28 @@ public extension 🪓 {
                                                                     &value)
             return try result.check(value)
         }
+
+        // MARK: Set/isSettable
+
+        ///
+        ///
+        /// See also `public func AXUIElementIsAttributeSettable(_ element: AXUIElement, _ attribute: CFString, _ settable: UnsafeMutablePointer<DarwinBoolean>) -> AXError`
+        func isSettable(attribute: NSAccessibility.Attribute) throws -> Bool {
+            var value: DarwinBoolean = false
+            let result = AXUIElementIsAttributeSettable(element,
+                                                        attribute.rawValue as CFString,
+                                                        &value)
+            return try result.check(value.boolValue)
+        }
+        ///
+        ///
+        /// See also `public func AXUIElementSetAttributeValue(_ element: AXUIElement, _ attribute: CFString, _ value: CoreFoundation.CFTypeRef) -> AXError`
+        func set(attribute: NSAccessibility.Attribute,
+                 value: Any?) throws {
+            try AXUIElementSetAttributeValue(element,
+                                             attribute.rawValue as CFString,
+                                             value as CFTypeRef)
+                .check()
+        }
     }
 }
