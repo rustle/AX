@@ -167,5 +167,35 @@ public extension 🪓 {
                                              value as CFTypeRef)
                 .check()
         }
+
+        // MARK: Actions
+
+        ///
+        ///
+        /// See also `public func AXUIElementCopyActionNames(_ element: AXUIElement, _ names: UnsafeMutablePointer<CFArray?>) -> AXError`
+        func actions() throws -> [NSAccessibility.Action] {
+            var actions: CFArray?
+            return try AXUIElementCopyActionNames(element,
+                                                  &actions)
+                .check(actions)
+        }
+        ///
+        ///
+        /// See also `public func AXUIElementCopyActionDescription(_ element: AXUIElement, _ action: CFString, _ description: UnsafeMutablePointer<CFString?>) -> AXError`
+        func description(action: NSAccessibility.Action) throws -> String {
+            var description: CFString?
+            return try AXUIElementCopyActionDescription(element,
+                                                        action.rawValue as CFString,
+                                                        &description)
+                .check(description)
+        }
+        ///
+        ///
+        /// See also `public func AXUIElementPerformAction(_ element: AXUIElement, _ action: CFString) -> AXError`
+        func perform(action: NSAccessibility.Action) throws {
+            try AXUIElementPerformAction(element,
+                                         action as CFString)
+                .check()
+        }
     }
 }
