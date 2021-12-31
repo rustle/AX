@@ -13,11 +13,11 @@ guard 🪓.isTrusted(promptIfNeeded: true) else {
 }
 
 func observer_callback(_ observer: AXObserver,
-                               _ uiElement: AXUIElement,
-                               _ name: CFString,
-                               _ info: CFDictionary?,
-                               _ refCon: UnsafeMutableRawPointer?) {
-    print("\(observer) \(name)")
+                       _ uiElement: AXUIElement,
+                       _ name: CFString,
+                       _ info: CFDictionary?,
+                       _ refCon: UnsafeMutableRawPointer?) {
+    print("\(observer) \(uiElement) \(🪓.UIElement(element: uiElement))")
 }
 
 func main() {
