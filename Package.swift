@@ -12,6 +12,9 @@ let package = Package(
         .library(
             name: "AX",
             targets: ["AX"]),
+        .executable(
+            name: "ObserverExample",
+            targets: ["ObserverExample"]),
     ],
     dependencies: [
     ],
@@ -19,6 +22,9 @@ let package = Package(
         .target(
             name: "AX",
             dependencies: []),
+        .executableTarget(
+            name: "ObserverExample",
+            dependencies: ["AX"]),
         .testTarget(
             name: "AXTests",
             dependencies: ["AX"]),
