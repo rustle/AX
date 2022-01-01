@@ -28,6 +28,44 @@ public extension 🪓 {
         case notImplemented
         case notificationNotRegistered
         case noValue
+        public init?(error: AXError) {
+            switch error {
+            case .success:
+                return nil
+            case .actionUnsupported:
+                self = .actionUnsupported
+            case .apiDisabled:
+                self = .apiDisabled
+            case .attributeUnsupported:
+                self = .attributeUnsupported
+            case .cannotComplete:
+                self = .cannotComplete
+            case .failure:
+                self = .failure
+            case .illegalArgument:
+                self = .illegalArgument
+            case .invalidUIElement:
+                self = .invalidUIElement
+            case .invalidUIElementObserver:
+                self = .invalidUIElementObserver
+            case .notEnoughPrecision:
+                self = .notEnoughPrecision
+            case .notificationAlreadyRegistered:
+                self = .notificationAlreadyRegistered
+            case .notificationUnsupported:
+                self = .notificationUnsupported
+            case .notImplemented:
+                self = .notImplemented
+            case .notificationNotRegistered:
+                self = .notificationNotRegistered
+            case .noValue:
+                self = .noValue
+            case .parameterizedAttributeUnsupported:
+                self = .parameterizedAttributeUnsupported
+            @unknown default:
+                self = .failure
+            }
+        }
     }
 }
 
@@ -62,41 +100,9 @@ public extension AXError {
     /// If `result` is a known error convert it
     @inlinable
     func check() throws {
-        switch self {
-        case .success:
+        guard let error = 🪓.Error(error: self) else {
             return
-        case .actionUnsupported:
-            throw 🪓.Error.actionUnsupported
-        case .apiDisabled:
-            throw 🪓.Error.apiDisabled
-        case .attributeUnsupported:
-            throw 🪓.Error.attributeUnsupported
-        case .cannotComplete:
-            throw 🪓.Error.cannotComplete
-        case .failure:
-            throw 🪓.Error.failure
-        case .illegalArgument:
-            throw 🪓.Error.illegalArgument
-        case .invalidUIElement:
-            throw 🪓.Error.invalidUIElement
-        case .invalidUIElementObserver:
-            throw 🪓.Error.invalidUIElementObserver
-        case .notEnoughPrecision:
-            throw 🪓.Error.notEnoughPrecision
-        case .notificationAlreadyRegistered:
-            throw 🪓.Error.notificationAlreadyRegistered
-        case .notificationUnsupported:
-            throw 🪓.Error.notificationUnsupported
-        case .notImplemented:
-            throw 🪓.Error.notImplemented
-        case .notificationNotRegistered:
-            throw 🪓.Error.notificationNotRegistered
-        case .noValue:
-            throw 🪓.Error.noValue
-        case .parameterizedAttributeUnsupported:
-            throw 🪓.Error.parameterizedAttributeUnsupported
-        @unknown default:
-            throw 🪓.Error.failure
         }
+        throw error
     }
 }
