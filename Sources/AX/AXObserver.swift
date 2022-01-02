@@ -11,7 +11,7 @@ import AppKit
 @available(macOS 10.0, *)
 public extension 🪓 {
     @available(macOS 10.2, *)
-    struct Observer {
+    struct Observer: CustomDebugStringConvertible {
 
         // MARK: Init
 
@@ -30,6 +30,16 @@ public extension 🪓 {
                                                                  callback,
                                                                  &observer)
                 .check(observer)
+        }
+
+        // MARK: Utility
+
+        public var debugDescription: String {
+            "<🪓.Observer \(String(describing: observer))>"
+        }
+
+        public var description: String {
+            debugDescription
         }
 
         // MARK: Scheduling
