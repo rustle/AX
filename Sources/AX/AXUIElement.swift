@@ -79,7 +79,7 @@ public struct UIElement: CustomStringConvertible, CustomDebugStringConvertible {
             append("Description:", .description)
             append("Value:", .value)
         }
-        return description.joined(separator: " ")
+        return "<UIElement \(description.joined(separator: " "))>"
     }
 
     // MARK: Attributes
@@ -195,5 +195,26 @@ public struct UIElement: CustomStringConvertible, CustomDebugStringConvertible {
         try AXUIElementPerformAction(element,
                                      action as CFString)
             .check()
+    }
+}
+
+extension UIElement: ReferenceConvertible {
+    public typealias ReferenceType = NSObject & NSCopying
+    public typealias _ObjectiveCType = AXUIElement
+    public func _bridgeToObjectiveC() -> _ObjectiveCType {
+        element
+    }
+    public static func _forceBridgeFromObjectiveC(_ source: _ObjectiveCType,
+                                                  result: inout UIElement?) {
+        result = .init(element: source)
+    }
+    public static func _conditionallyBridgeFromObjectiveC(_ source: _ObjectiveCType,
+                                                          result: inout UIElement?) -> Bool {
+        guard CFGetTypeID(source) == AXUIElementGetTypeID() else { return false }
+        result = .init(element: source)
+        return true
+    }
+    public static func _unconditionallyBridgeFromObjectiveC(_ source: _ObjectiveCType?) -> UIElement {
+        .init(element: source!)
     }
 }

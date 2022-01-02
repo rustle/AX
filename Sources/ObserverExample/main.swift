@@ -17,7 +17,10 @@ func observer_callback(_ observer: AXObserver,
                        _ name: CFString,
                        _ info: CFDictionary?,
                        _ refCon: UnsafeMutableRawPointer?) {
-    print("\(observer) \(uiElement) \(UIElement(element: uiElement))")
+    print(observer)
+    print(observer as Observer)
+    print(uiElement)
+    print(uiElement as UIElement)
 }
 
 func main() {
@@ -42,8 +45,12 @@ do {
         exit(1)
     }
     let element = UIElement.application(pid: finder.processIdentifier)
+    print(element)
+    print(element as AXUIElement)
     let observer = try Observer(pid: element.pid,
                                 callback: observer_callback)
+    print(observer)
+    print(observer as AXObserver)
     observer.schedule(on: .main)
     try observer.add(element: element,
                      notification: .focusedUIElementChanged,

@@ -80,3 +80,24 @@ public struct Observer: CustomDebugStringConvertible {
             .check()
     }
 }
+
+extension Observer: ReferenceConvertible {
+    public typealias ReferenceType = NSObject & NSCopying
+    public typealias _ObjectiveCType = AXObserver
+    public func _bridgeToObjectiveC() -> _ObjectiveCType {
+        observer
+    }
+    public static func _forceBridgeFromObjectiveC(_ source: _ObjectiveCType,
+                                                  result: inout Observer?) {
+        result = .init(observer: source)
+    }
+    public static func _conditionallyBridgeFromObjectiveC(_ source: _ObjectiveCType,
+                                                          result: inout Observer?) -> Bool {
+        guard CFGetTypeID(source) == AXObserverGetTypeID() else { return false }
+        result = .init(observer: source)
+        return true
+    }
+    public static func _unconditionallyBridgeFromObjectiveC(_ source: _ObjectiveCType?) -> Observer {
+        .init(observer: source!)
+    }
+}
