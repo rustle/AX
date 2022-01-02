@@ -7,7 +7,7 @@
 import AX
 import Cocoa
 
-guard 🪓.isTrusted(promptIfNeeded: true) else {
+guard isTrusted(promptIfNeeded: true) else {
     print("Not Trusted")
     exit(1)
 }
@@ -17,7 +17,7 @@ func observer_callback(_ observer: AXObserver,
                        _ name: CFString,
                        _ info: CFDictionary?,
                        _ refCon: UnsafeMutableRawPointer?) {
-    print("\(observer) \(uiElement) \(🪓.UIElement(element: uiElement))")
+    print("\(observer) \(uiElement) \(UIElement(element: uiElement))")
 }
 
 func main() {
@@ -41,9 +41,9 @@ do {
         print(NSWorkspace.shared.runningApplications.compactMap(\.bundleIdentifier))
         exit(1)
     }
-    let element = 🪓.UIElement.application(pid: finder.processIdentifier)
-    let observer = try 🪓.Observer(pid: element.pid,
-                                   callback: observer_callback)
+    let element = UIElement.application(pid: finder.processIdentifier)
+    let observer = try Observer(pid: element.pid,
+                                callback: observer_callback)
     observer.schedule(on: .main)
     try observer.add(element: element,
                      notification: .focusedUIElementChanged,
