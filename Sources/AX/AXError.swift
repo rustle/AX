@@ -43,6 +43,40 @@ public enum Error: Swift.Error {
     case notificationNotRegistered
     /// The requested value or UIElement does not exist.
     case noValue
+    public var error: AXError {
+        switch self {
+        case .actionUnsupported:
+            return .actionUnsupported
+        case .apiDisabled:
+            return .apiDisabled
+        case .attributeUnsupported:
+            return .attributeUnsupported
+        case .parameterizedAttributeUnsupported:
+            return .parameterizedAttributeUnsupported
+        case .cannotComplete:
+            return .cannotComplete
+        case .failure:
+            return .failure
+        case .illegalArgument:
+            return .illegalArgument
+        case .invalidUIElement:
+            return .invalidUIElement
+        case .invalidUIElementObserver:
+            return .invalidUIElementObserver
+        case .notEnoughPrecision:
+            return .notEnoughPrecision
+        case .notificationAlreadyRegistered:
+            return .notificationAlreadyRegistered
+        case .notificationUnsupported:
+            return .notificationUnsupported
+        case .notImplemented:
+            return .notImplemented
+        case .notificationNotRegistered:
+            return .notificationNotRegistered
+        case .noValue:
+            return .noValue
+        }
+    }
     public init?(error: AXError) {
         switch error {
         case .success:
