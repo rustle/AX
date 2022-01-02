@@ -110,6 +110,35 @@ public struct UIElement: CustomStringConvertible, CustomDebugStringConvertible {
                                                    &value)
         return try result.check(value)
     }
+    /// Returns the count of the array type attribute value.
+    ///
+    /// See also `public func AXUIElementGetAttributeValueCount(_ element: AXUIElement, _ attribute: CFString, _ count: UnsafeMutablePointer<CFIndex>) -> AXError`
+    public func count(attribute: NSAccessibility.Attribute) throws -> Int {
+        var count: CFIndex = kCFNotFound
+        return try AXUIElementGetAttributeValueCount(element,
+                                                     attribute as CFString,
+                                                     &count)
+            .check(count)
+    }
+    /// Returns an array of attribute values for the attribute, starting at the specified index.
+    /// 
+    /// This function is useful for dealing with large arrays, for example, a table view with a large number of children.
+    ///
+    /// See also `public func AXUIElementCopyAttributeValues(_ element: AXUIElement, _ attribute: CFString, _ index: CFIndex, _ maxValues: CFIndex, _ values: UnsafeMutablePointer<CFArray?>) -> AXError`
+    public func values(attribute: NSAccessibility.Attribute,
+                       index: Int,
+                       maxCount: Int) throws -> [Any] {
+        var values: CFArray?
+        return try AXUIElementCopyAttributeValues(element, attribute as CFString, index, maxCount, &values)
+            .check(values)
+    }
+    public func values<V>(attribute: NSAccessibility.Attribute,
+                          index: Int,
+                          maxCount: Int) throws -> [V] {
+        var values: CFArray?
+        return try AXUIElementCopyAttributeValues(element, attribute as CFString, index, maxCount, &values)
+            .check(values)
+    }
 
     // MARK: Parameterized Attributes
 
