@@ -72,8 +72,7 @@ public struct Observer: CustomDebugStringConvertible {
     ///
     /// See also `public func AXObserverRemoveNotification(_ observer: AXObserver, _ element: AXUIElement, _ notification: CFString) -> AXError`
     public func remove(element: UIElement,
-                       notification: NSAccessibility.Notification,
-                       context: UnsafeMutableRawPointer?) throws {
+                       notification: NSAccessibility.Notification) throws {
         try AXObserverRemoveNotification(observer,
                                          element.element,
                                          notification as CFString)
