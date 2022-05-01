@@ -270,6 +270,21 @@ public struct UIElement: CustomStringConvertible, CustomDebugStringConvertible {
     }
 }
 
+extension UIElement: Hashable {
+    public static func ==(
+        lhs: UIElement,
+        rhs: UIElement
+    ) -> Bool {
+        CFEqual(
+            lhs.element,
+            rhs.element
+        )
+    }
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(CFHash(element))
+    }
+}
+
 extension UIElement: ReferenceConvertible {
     public typealias ReferenceType = NSObject & NSCopying
     public typealias _ObjectiveCType = AXUIElement
