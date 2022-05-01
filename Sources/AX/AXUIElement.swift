@@ -59,14 +59,35 @@ public struct UIElement: CustomStringConvertible, CustomDebugStringConvertible {
             return try result.check(pid)
         }
     }
+
     public var description: String {
-        debugDescription
-    }
-    public var debugDescription: String {
         var description = [String(describing: element)]
+        description.reserveCapacity(4)
         if let attrs = try? attributes(), attrs.count > 0 {
             description.append("Attributes: \(attrs.map(\.rawValue))")
-            func append(_ prefix: String, _ attribute: NSAccessibility.Attribute) {
+            func append(_ prefix: String,
+                        _ attribute: NSAccessibility.Attribute) {
+                guard attrs.contains(attribute), let value = try? value(attribute: attribute) else {
+                    return
+                }
+                description.append(prefix)
+                description.append(String(describing: value))
+            }
+            append("Role:", .role)
+            append("Subrole:", .subrole)
+            append("Title:", .title)
+            append("Description:", .description)
+        }
+        return "<UIElement \(description.joined(separator: " "))>"
+    }
+
+    public var debugDescription: String {
+        var description = [String(describing: element)]
+        description.reserveCapacity(5)
+        if let attrs = try? attributes(), !attrs.isEmpty {
+            description.append("Attributes: \(attrs.map(\.rawValue))")
+            func append(_ prefix: String,
+                        _ attribute: NSAccessibility.Attribute) {
                 guard attrs.contains(attribute), let value = try? value(attribute: attribute) else {
                     return
                 }
@@ -79,7 +100,29 @@ public struct UIElement: CustomStringConvertible, CustomDebugStringConvertible {
             append("Description:", .description)
             append("Value:", .value)
         }
-        return "<UIElement \(description.joined(separator: " "))>"
+        return "<UIElement \(description.joined(separator: "\n"))>"
+    }
+
+    public var debugInfo: [String:Any] {
+        var info = [String:Any]()
+        if let attrs = try? attributes(), !attrs.isEmpty {
+            info["Attributes"] = attrs.map(\.rawValue)
+            func append(_ attribute: NSAccessibility.Attribute) {
+                guard attrs.contains(attribute), let value = try? value(attribute: attribute) else {
+                    return
+                }
+                info[attribute.rawValue] = String(describing: value)
+            }
+            append(.role)
+            append(.subrole)
+            append(.title)
+            append(.description)
+            append(.value)
+        }
+        if let parameterizedAttrs = try? parameterizedAttributes(), !parameterizedAttrs.isEmpty {
+            info["ParameterizedAttributes"] = parameterizedAttrs.map(\.rawValue)
+        }
+        return info
     }
 
     // MARK: Attributes
