@@ -48,9 +48,7 @@ public struct Observer: CustomDebugStringConvertible {
     public var runLoopSource: CFRunLoopSource {
         AXObserverGetRunLoopSource(observer)
     }
-    /// Receiver must be scheduled on a run loop before it can receive notifications.
-    ///
-    /// See also `public func AXObserverGetRunLoopSource(_ observer: AXObserver) -> CFRunLoopSource`
+    /// Convenience method to add `runLoopSource` to a given `RunLoop`
     public func schedule(on runLoop: RunLoop) {
         CFRunLoopAddSource(runLoop.getCFRunLoop(),
                            runLoopSource,
