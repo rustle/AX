@@ -48,11 +48,29 @@ public struct Observer: CustomDebugStringConvertible {
     public var runLoopSource: CFRunLoopSource {
         AXObserverGetRunLoopSource(observer)
     }
+    /// Convenience method to add `runLoopSource` to the current `RunLoop`
+    public func schedule() {
+        CFRunLoopAddSource(CFRunLoopGetCurrent(),
+                           runLoopSource,
+                           CFRunLoopMode.defaultMode)
+    }
     /// Convenience method to add `runLoopSource` to a given `RunLoop`
     public func schedule(on runLoop: RunLoop) {
         CFRunLoopAddSource(runLoop.getCFRunLoop(),
                            runLoopSource,
                            CFRunLoopMode.defaultMode)
+    }
+    /// Convenience method to remove `runLoopSource` from a given `RunLoop`
+    public func unschedule(on runLoop: RunLoop) {
+        CFRunLoopRemoveSource(runLoop.getCFRunLoop(),
+                              runLoopSource,
+                              CFRunLoopMode.defaultMode)
+    }
+    /// Convenience method to remove `runLoopSource` from the current `RunLoop`
+    public func unschedule() {
+        CFRunLoopRemoveSource(CFRunLoopGetCurrent(),
+                              runLoopSource,
+                              CFRunLoopMode.defaultMode)
     }
     /// Registers observer to receive notifications from the specified element.
     ///
