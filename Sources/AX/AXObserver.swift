@@ -21,14 +21,16 @@ public struct Observer: CustomDebugStringConvertible {
     /// Create a new accessibility notification observer for pid with callback
     ///
     /// See also `public func AXObserverCreateWithInfoCallback(_ application: pid_t, _ callback: @escaping ApplicationServices.AXObserverCallbackWithInfo, _ outObserver: UnsafeMutablePointer<AXObserver?>) -> AXError`
-    public init(pid: pid_t,
-                callback: @escaping AXObserverCallbackWithInfo) throws {
+    public init(
+        pid: pid_t,
+        callback: @escaping AXObserverCallbackWithInfo
+    ) throws {
         var observer: AXObserver?
         self.observer = try AXObserverCreateWithInfoCallback(pid,
-                                                             callback,
-                                                             &observer)
-            .check(observer)
-    }
+                                                            callback,
+                                                            &observer)
+        .check(observer)
+}
 
     // MARK: Utility
 
@@ -50,48 +52,64 @@ public struct Observer: CustomDebugStringConvertible {
     }
     /// Convenience method to add `runLoopSource` to the current `RunLoop`
     public func schedule() {
-        CFRunLoopAddSource(CFRunLoopGetCurrent(),
-                           runLoopSource,
-                           CFRunLoopMode.defaultMode)
+        CFRunLoopAddSource(
+            CFRunLoopGetCurrent(),
+            runLoopSource,
+            CFRunLoopMode.defaultMode
+        )
     }
     /// Convenience method to add `runLoopSource` to a given `RunLoop`
     public func schedule(on runLoop: RunLoop) {
-        CFRunLoopAddSource(runLoop.getCFRunLoop(),
-                           runLoopSource,
-                           CFRunLoopMode.defaultMode)
+        CFRunLoopAddSource(
+            runLoop.getCFRunLoop(),
+            runLoopSource,
+            CFRunLoopMode.defaultMode
+        )
     }
     /// Convenience method to remove `runLoopSource` from a given `RunLoop`
     public func unschedule(on runLoop: RunLoop) {
-        CFRunLoopRemoveSource(runLoop.getCFRunLoop(),
-                              runLoopSource,
-                              CFRunLoopMode.defaultMode)
+        CFRunLoopRemoveSource(
+            runLoop.getCFRunLoop(),
+            runLoopSource,
+            CFRunLoopMode.defaultMode
+        )
     }
     /// Convenience method to remove `runLoopSource` from the current `RunLoop`
     public func unschedule() {
-        CFRunLoopRemoveSource(CFRunLoopGetCurrent(),
-                              runLoopSource,
-                              CFRunLoopMode.defaultMode)
+        CFRunLoopRemoveSource(
+            CFRunLoopGetCurrent(),
+            runLoopSource,
+            CFRunLoopMode.defaultMode
+        )
     }
     /// Registers observer to receive notifications from the specified element.
     ///
     /// See also `public func AXObserverAddNotification(_ observer: AXObserver, _ element: AXUIElement, _ notification: CFString, _ refcon: UnsafeMutableRawPointer?) -> AXError`
-    public func add(element: UIElement,
-                    notification: NSAccessibility.Notification,
-                    context: UnsafeMutableRawPointer?) throws {
-        try AXObserverAddNotification(observer,
-                                      element.element,
-                                      notification as CFString,
-                                      context)
+    public func add(
+        element: UIElement,
+        notification: NSAccessibility.Notification,
+        context: UnsafeMutableRawPointer?
+    ) throws {
+        try AXObserverAddNotification(
+            observer,
+            element.element,
+            notification as CFString,
+            context
+        )
             .check()
     }
     /// Removes the specified notification from the list of notifications observer may receive from the specified element.
     ///
     /// See also `public func AXObserverRemoveNotification(_ observer: AXObserver, _ element: AXUIElement, _ notification: CFString) -> AXError`
-    public func remove(element: UIElement,
-                       notification: NSAccessibility.Notification) throws {
-        try AXObserverRemoveNotification(observer,
-                                         element.element,
-                                         notification as CFString)
+    public func remove(
+        element: UIElement,
+        notification: NSAccessibility.Notification
+    ) throws {
+        try AXObserverRemoveNotification(
+            observer,
+            element.element,
+            notification as CFString
+        )
             .check()
     }
 }
@@ -102,12 +120,16 @@ extension Observer: ReferenceConvertible {
     public func _bridgeToObjectiveC() -> _ObjectiveCType {
         observer
     }
-    public static func _forceBridgeFromObjectiveC(_ source: _ObjectiveCType,
-                                                  result: inout Observer?) {
+    public static func _forceBridgeFromObjectiveC(
+        _ source: _ObjectiveCType,
+        result: inout Observer?
+    ) {
         result = .init(observer: source)
     }
-    public static func _conditionallyBridgeFromObjectiveC(_ source: _ObjectiveCType,
-                                                          result: inout Observer?) -> Bool {
+    public static func _conditionallyBridgeFromObjectiveC(
+        _ source: _ObjectiveCType,
+        result: inout Observer?
+    ) -> Bool {
         guard CFGetTypeID(source) == AXObserverGetTypeID() else { return false }
         result = .init(observer: source)
         return true

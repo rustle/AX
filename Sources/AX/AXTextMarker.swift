@@ -21,9 +21,11 @@ public struct TextMarker: CustomStringConvertible, CustomDebugStringConvertible 
             throw Error.illegalArgument
         }
         textMarker = data.withUnsafeBytes { buffer in
-            AXTextMarkerCreate(kCFAllocatorDefault,
-                               buffer.bindMemory(to: UInt8.self).baseAddress!,
-                               buffer.count)
+            AXTextMarkerCreate(
+                kCFAllocatorDefault,
+                buffer.bindMemory(to: UInt8.self).baseAddress!,
+                buffer.count
+            )
         }
     }
 
@@ -40,8 +42,10 @@ public struct TextMarker: CustomStringConvertible, CustomDebugStringConvertible 
 
     @inlinable
     public func withUnsafeBytes<ResultType>(_ body: (UnsafeRawBufferPointer) throws -> ResultType) rethrows -> ResultType {
-        try body(UnsafeRawBufferPointer(start: AXTextMarkerGetBytePtr(textMarker),
-                                        count: AXTextMarkerGetLength(textMarker)))
+        try body(UnsafeRawBufferPointer(
+            start: AXTextMarkerGetBytePtr(textMarker),
+            count: AXTextMarkerGetLength(textMarker)
+        ))
     }
 }
 
@@ -60,24 +64,32 @@ public struct TextMarkerRange {
     public init(textMarkerRange: AXTextMarkerRange) {
         self.textMarkerRange = textMarkerRange
     }
-    public init(lowerBound: TextMarker,
-                upperBound: TextMarker) {
-        textMarkerRange = AXTextMarkerRangeCreate(kCFAllocatorDefault,
-                                                  lowerBound.textMarker,
-                                                  upperBound.textMarker)
+    public init(
+        lowerBound: TextMarker,
+        upperBound: TextMarker
+    ) {
+        textMarkerRange = AXTextMarkerRangeCreate(
+            kCFAllocatorDefault,
+            lowerBound.textMarker,
+            upperBound.textMarker
+        )
     }
-    public init(lowerBound: Data,
-                upperBound: Data) throws {
+    public init(
+        lowerBound: Data,
+        upperBound: Data
+    ) throws {
         guard lowerBound.count > 0, upperBound.count > 0 else {
             throw Error.illegalArgument
         }
         textMarkerRange = lowerBound.withUnsafeBytes { lowerData -> AXTextMarkerRange in
             upperBound.withUnsafeBytes { upperData -> AXTextMarkerRange in
-                AXTextMarkerRangeCreateWithBytes(kCFAllocatorDefault,
-                                                 lowerData.bindMemory(to: UInt8.self).baseAddress!,
-                                                 lowerData.count,
-                                                 upperData.bindMemory(to: UInt8.self).baseAddress!,
-                                                 upperData.count)
+                AXTextMarkerRangeCreateWithBytes(
+                    kCFAllocatorDefault,
+                    lowerData.bindMemory(to: UInt8.self).baseAddress!,
+                    lowerData.count,
+                    upperData.bindMemory(to: UInt8.self).baseAddress!,
+                    upperData.count
+                )
             }
         }
     }
@@ -89,12 +101,16 @@ extension TextMarker: ReferenceConvertible {
     public func _bridgeToObjectiveC() -> _ObjectiveCType {
         textMarker
     }
-    public static func _forceBridgeFromObjectiveC(_ source: _ObjectiveCType,
-                                                  result: inout TextMarker?) {
+    public static func _forceBridgeFromObjectiveC(
+        _ source: _ObjectiveCType,
+        result: inout TextMarker?
+    ) {
         result = .init(textMarker: source)
     }
-    public static func _conditionallyBridgeFromObjectiveC(_ source: _ObjectiveCType,
-                                                          result: inout TextMarker?) -> Bool {
+    public static func _conditionallyBridgeFromObjectiveC(
+        _ source: _ObjectiveCType,
+        result: inout TextMarker?
+    ) -> Bool {
         guard CFGetTypeID(source) == AXTextMarkerGetTypeID() else { return false }
         result = .init(textMarker: source)
         return true
