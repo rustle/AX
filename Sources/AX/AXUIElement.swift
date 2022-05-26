@@ -62,9 +62,9 @@ public struct UIElement: CustomStringConvertible, CustomDebugStringConvertible {
 
     public var description: String {
         var description = [String(describing: element)]
-        description.reserveCapacity(4)
+        description.reserveCapacity(9)
         if let attrs = try? attributes(), attrs.count > 0 {
-            description.append("Attributes: \(attrs.map(\.rawValue))")
+            description.append("Attributes: \(attrs.map(\.rawValue))") // 1
             func append(_ prefix: String,
                         _ attribute: NSAccessibility.Attribute) {
                 guard attrs.contains(attribute), let value = try? value(attribute: attribute) else {
@@ -73,19 +73,19 @@ public struct UIElement: CustomStringConvertible, CustomDebugStringConvertible {
                 description.append(prefix)
                 description.append(String(describing: value))
             }
-            append("Role:", .role)
-            append("Subrole:", .subrole)
-            append("Title:", .title)
-            append("Description:", .description)
+            append("Role:", .role) // 2, 3
+            append("Subrole:", .subrole) // 4, 5
+            append("Title:", .title) // 6, 7
+            append("Description:", .description) // 8, 9
         }
         return "<UIElement \(description.joined(separator: " "))>"
     }
 
     public var debugDescription: String {
         var description = [String(describing: element)]
-        description.reserveCapacity(5)
+        description.reserveCapacity(11)
         if let attrs = try? attributes(), !attrs.isEmpty {
-            description.append("Attributes: \(attrs.map(\.rawValue))")
+            description.append("Attributes: \(attrs.map(\.rawValue))") // 1
             func append(_ prefix: String,
                         _ attribute: NSAccessibility.Attribute) {
                 guard attrs.contains(attribute), let value = try? value(attribute: attribute) else {
@@ -94,11 +94,11 @@ public struct UIElement: CustomStringConvertible, CustomDebugStringConvertible {
                 description.append(prefix)
                 description.append(String(describing: value))
             }
-            append("Role:", .role)
-            append("Subrole:", .subrole)
-            append("Title:", .title)
-            append("Description:", .description)
-            append("Value:", .value)
+            append("Role:", .role) // 2, 3
+            append("Subrole:", .subrole) // 4, 5
+            append("Title:", .title) // 6, 7
+            append("Description:", .description) // 8, 9
+            append("Value:", .value) // 10, 11
         }
         return "<UIElement \(description.joined(separator: "\n"))>"
     }
