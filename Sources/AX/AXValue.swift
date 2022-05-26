@@ -12,7 +12,7 @@ public enum Value: Equatable {
     case size(CGSize)
     case rect(CGRect)
     case range(Range<Int>)
-    case error(Error)
+    case error(AXError)
 
     public var value: AXValue {
         switch self {
@@ -97,19 +97,19 @@ public enum Value: Equatable {
             )
             self = .range(range.location..<range.location+range.length)
         case .axError:
-            var axError = AXError.success
+            var axError = ApplicationServices.AXError.success
             try value.get(
                 .axError,
                 &axError
             )
-            guard let error = Error(error: axError) else {
-                throw Error.failure
+            guard let error = AXError(error: axError) else {
+                throw AXError.failure
             }
             self = .error(error)
         case .illegal:
             fatalError()
         @unknown default:
-            throw Error.failure
+            throw AXError.failure
         }
     }
 }
@@ -126,7 +126,7 @@ public extension AXValue {
             type,
             &result
         ) else {
-            throw Error.failure
+            throw AXError.failure
         }
     }
 }

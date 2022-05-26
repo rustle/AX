@@ -18,7 +18,7 @@ public struct TextMarker: CustomStringConvertible, CustomDebugStringConvertible 
 
     public init(data: Data) throws {
         guard data.count > 0 else {
-            throw Error.illegalArgument
+            throw AXError.illegalArgument
         }
         textMarker = data.withUnsafeBytes { buffer in
             AXTextMarkerCreate(
@@ -79,7 +79,7 @@ public struct TextMarkerRange {
         upperBound: Data
     ) throws {
         guard lowerBound.count > 0, upperBound.count > 0 else {
-            throw Error.illegalArgument
+            throw AXError.illegalArgument
         }
         textMarkerRange = lowerBound.withUnsafeBytes { lowerData -> AXTextMarkerRange in
             upperBound.withUnsafeBytes { upperData -> AXTextMarkerRange in

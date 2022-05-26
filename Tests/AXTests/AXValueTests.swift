@@ -87,7 +87,7 @@ final class AXValueTests: XCTestCase {
         )
     }
     func testError() throws {
-        var axError = AXError.illegalArgument
+        var axError = ApplicationServices.AXError.illegalArgument
         let axValue = AXValueCreate(
             .axError,
             &axError
@@ -95,7 +95,7 @@ final class AXValueTests: XCTestCase {
         let value = try Value(value: axValue)
         XCTAssertEqual(
             value,
-            .error(Error.illegalArgument)
+            .error(AXError.illegalArgument)
         )
         XCTAssertEqual(
             value.value,

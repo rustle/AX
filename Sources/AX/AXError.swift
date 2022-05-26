@@ -6,11 +6,11 @@
 
 import ApplicationServices.HIServices
 
-// It would be nice to just have AXError conform to Swift.Error
+// It would be nice to just have ApplicationServices.AXError conform to Swift.Error
 // but we want to drop the `success` case
 
 @available(macOS 10.2, *)
-public enum Error: Swift.Error {
+public enum AXError: Error {
     /// The action is not supported by the UIElement.
     case actionUnsupported
     /// The accessibility API is disabled.
@@ -43,7 +43,7 @@ public enum Error: Swift.Error {
     case notificationNotRegistered
     /// The requested value or UIElement does not exist.
     case noValue
-    public var error: AXError {
+    public var error: ApplicationServices.AXError {
         switch self {
         case .actionUnsupported:
             return .actionUnsupported
@@ -77,7 +77,7 @@ public enum Error: Swift.Error {
             return .noValue
         }
     }
-    public init?(error: AXError) {
+    public init?(error: ApplicationServices.AXError) {
         switch error {
         case .success:
             return nil
@@ -118,7 +118,7 @@ public enum Error: Swift.Error {
 }
 
 @available(macOS 10.2, *)
-public extension AXError {
+public extension ApplicationServices.AXError {
     /// If `result == .success` force unwrap `value`
     /// If `result` is a known error convert it
     @inlinable
@@ -132,7 +132,7 @@ public extension AXError {
     func check<V>(_ value: Any?) throws -> V {
         try check()
         guard let checked = value as? V else {
-            throw Error.cannotComplete
+            throw AXError.cannotComplete
         }
         return checked
     }
@@ -148,7 +148,7 @@ public extension AXError {
     /// If `result` is a known error convert it
     @inlinable
     func check() throws {
-        guard let error = Error(error: self) else {
+        guard let error = AXError(error: self) else {
             return
         }
         throw error
