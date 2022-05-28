@@ -7,7 +7,7 @@
 import XCTest
 @testable import AX
 
-@available(macOS 12, *)
+@available(macOS 11, *)
 final class AXTextMarkerTests: XCTestCase {
     func testTextMarkerRoundTrip() {
         var uuid = UUID().uuidString

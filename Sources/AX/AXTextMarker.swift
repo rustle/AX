@@ -6,7 +6,7 @@
 
 import Cocoa
 
-@available(macOS 12, *)
+@available(macOS 11, *)
 public struct TextMarker: CustomStringConvertible, CustomDebugStringConvertible {
 
     // MARK: Init
@@ -49,7 +49,7 @@ public struct TextMarker: CustomStringConvertible, CustomDebugStringConvertible 
     }
 }
 
-@available(macOS 12, *)
+@available(macOS 11, *)
 public struct TextMarkerRange: CustomStringConvertible, CustomDebugStringConvertible {
 
     // MARK: Init
@@ -104,7 +104,7 @@ public struct TextMarkerRange: CustomStringConvertible, CustomDebugStringConvert
     }
 }
 
-@available(macOS 12, *)
+@available(macOS 11, *)
 extension TextMarker: ReferenceConvertible {
     public typealias ReferenceType = NSObject & NSCopying
     public typealias _ObjectiveCType = AXTextMarker
@@ -130,7 +130,7 @@ extension TextMarker: ReferenceConvertible {
     }
 }
 
-@available(macOS 12, *)
+@available(macOS 11, *)
 extension TextMarkerRange: ReferenceConvertible {
     public typealias ReferenceType = NSObject & NSCopying
     public typealias _ObjectiveCType = AXTextMarkerRange
