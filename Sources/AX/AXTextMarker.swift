@@ -104,6 +104,7 @@ public struct TextMarkerRange: CustomStringConvertible, CustomDebugStringConvert
     }
 }
 
+@available(macOS 12, *)
 extension TextMarker: ReferenceConvertible {
     public typealias ReferenceType = NSObject & NSCopying
     public typealias _ObjectiveCType = AXTextMarker
@@ -126,5 +127,31 @@ extension TextMarker: ReferenceConvertible {
     }
     public static func _unconditionallyBridgeFromObjectiveC(_ source: _ObjectiveCType?) -> TextMarker {
         .init(textMarker: source!)
+    }
+}
+
+@available(macOS 12, *)
+extension TextMarkerRange: ReferenceConvertible {
+    public typealias ReferenceType = NSObject & NSCopying
+    public typealias _ObjectiveCType = AXTextMarkerRange
+    public func _bridgeToObjectiveC() -> _ObjectiveCType {
+        textMarkerRange
+    }
+    public static func _forceBridgeFromObjectiveC(
+        _ source: _ObjectiveCType,
+        result: inout TextMarkerRange?
+    ) {
+        result = .init(textMarkerRange: source)
+    }
+    public static func _conditionallyBridgeFromObjectiveC(
+        _ source: _ObjectiveCType,
+        result: inout TextMarkerRange?
+    ) -> Bool {
+        guard CFGetTypeID(source) == AXTextMarkerRangeGetTypeID() else { return false }
+        result = .init(textMarkerRange: source)
+        return true
+    }
+    public static func _unconditionallyBridgeFromObjectiveC(_ source: _ObjectiveCType?) -> TextMarkerRange {
+        .init(textMarkerRange: source!)
     }
 }
