@@ -50,7 +50,7 @@ public struct TextMarker: CustomStringConvertible, CustomDebugStringConvertible 
 }
 
 @available(macOS 12, *)
-public struct TextMarkerRange {
+public struct TextMarkerRange: CustomStringConvertible, CustomDebugStringConvertible {
 
     // MARK: Init
 
@@ -92,6 +92,15 @@ public struct TextMarkerRange {
                 )
             }
         }
+    }
+
+    // MARK: Utility
+
+    public var debugDescription: String {
+        String(describing: textMarkerRange)
+    }
+    public var description: String {
+        debugDescription
     }
 }
 
