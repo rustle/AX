@@ -20,12 +20,27 @@ fileprivate func observer_callback(
     print(uiElement as UIElement)
 }
 
+private class Target: NSObject {
+    static let target = Target()
+    @objc
+    func nop() {}
+}
+
 fileprivate func run() -> Never {
     autoreleasepool {
-        Timer.scheduledTimer(
-            withTimeInterval: Date.distantFuture.timeIntervalSince1970,
+        // Stick a timer that does nothing on the run loop
+        // so it's not constantly returning
+        let timer = Timer(
+            timeInterval: Date.distantFuture.timeIntervalSince1970,
+            target: Target.target,
+            selector: #selector(Target.nop),
+            userInfo: nil,
             repeats: true
-        ) { _ in }
+        )
+        RunLoop.current.add(
+            timer,
+            forMode: .default
+        )
         while true {
             autoreleasepool {
                 _ = CFRunLoopRunInMode(

@@ -5,7 +5,7 @@ import PackageDescription
 let package = Package(
     name: "AX",
     platforms: [
-        .macOS(.v11)
+        .macOS(.v10_10)
     ],
     products: [
         .library(
