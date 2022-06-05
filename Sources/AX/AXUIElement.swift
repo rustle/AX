@@ -231,8 +231,10 @@ public struct UIElement: CustomStringConvertible, CustomDebugStringConvertible {
     ///
     ///
     /// See also `public func AXUIElementCopyParameterizedAttributeValue(_ element: AXUIElement, _ parameterizedAttribute: CFString, _ parameter: CoreFoundation.CFTypeRef, _ result: UnsafeMutablePointer<CoreFoundation.CFTypeRef?>) -> AXError`
-    public func value(attribute: NSAccessibility.ParameterizedAttribute,
-                      parameter: Any) throws -> Any {
+    public func value(
+        attribute: NSAccessibility.ParameterizedAttribute,
+        parameter: Any
+    ) throws -> Any {
         var value: CFTypeRef?
         let result = AXUIElementCopyParameterizedAttributeValue(
             element,
@@ -242,8 +244,10 @@ public struct UIElement: CustomStringConvertible, CustomDebugStringConvertible {
         )
         return try result.check(value)
     }
-    public func value<V>(attribute: NSAccessibility.ParameterizedAttribute,
-                         parameter: Any) throws -> V {
+    public func value<V>(
+        attribute: NSAccessibility.ParameterizedAttribute,
+        parameter: Any
+    ) throws -> V {
         var value: CFTypeRef?
         let result = AXUIElementCopyParameterizedAttributeValue(
             element,

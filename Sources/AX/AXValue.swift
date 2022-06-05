@@ -119,8 +119,10 @@ public extension AXValue {
     var type: AXValueType {
         AXValueGetType(self)
     }
-    func get<V>(_ type: AXValueType,
-                _ result: inout V) throws {
+    func get<V>(
+        _ type: AXValueType,
+        _ result: inout V
+    ) throws {
         guard AXValueGetValue(
             self,
             type,
