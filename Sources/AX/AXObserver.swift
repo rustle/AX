@@ -53,35 +53,41 @@ public struct Observer: CustomStringConvertible, CustomDebugStringConvertible {
         AXObserverGetRunLoopSource(observer)
     }
     /// Convenience method to add `runLoopSource` to the current `RunLoop`
-    public func schedule() {
+    public func schedule(in mode: CFRunLoopMode = .defaultMode) {
         CFRunLoopAddSource(
             CFRunLoopGetCurrent(),
             runLoopSource,
-            CFRunLoopMode.defaultMode
+            mode
         )
     }
     /// Convenience method to add `runLoopSource` to a given `RunLoop`
-    public func schedule(on runLoop: RunLoop) {
+    public func schedule(
+        on runLoop: RunLoop,
+        in mode: CFRunLoopMode = .defaultMode
+    ) {
         CFRunLoopAddSource(
             runLoop.getCFRunLoop(),
             runLoopSource,
-            CFRunLoopMode.defaultMode
-        )
-    }
-    /// Convenience method to remove `runLoopSource` from a given `RunLoop`
-    public func unschedule(on runLoop: RunLoop) {
-        CFRunLoopRemoveSource(
-            runLoop.getCFRunLoop(),
-            runLoopSource,
-            CFRunLoopMode.defaultMode
+            mode
         )
     }
     /// Convenience method to remove `runLoopSource` from the current `RunLoop`
-    public func unschedule() {
+    public func unschedule(in mode: CFRunLoopMode = .defaultMode) {
         CFRunLoopRemoveSource(
             CFRunLoopGetCurrent(),
             runLoopSource,
-            CFRunLoopMode.defaultMode
+            mode
+        )
+    }
+    /// Convenience method to remove `runLoopSource` from a given `RunLoop`
+    public func unschedule(
+        on runLoop: RunLoop,
+        in mode: CFRunLoopMode = .defaultMode
+    ) {
+        CFRunLoopRemoveSource(
+            runLoop.getCFRunLoop(),
+            runLoopSource,
+            mode
         )
     }
     /// Registers observer to receive notifications from the specified element.
