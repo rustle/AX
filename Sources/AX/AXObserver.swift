@@ -26,10 +26,12 @@ public struct Observer: CustomStringConvertible, CustomDebugStringConvertible {
         callback: @escaping AXObserverCallbackWithInfo
     ) throws {
         var observer: AXObserver?
-        self.observer = try AXObserverCreateWithInfoCallback(pid,
-                                                            callback,
-                                                            &observer)
-        .check(observer)
+        self.observer = try AXObserverCreateWithInfoCallback(
+                pid,
+                callback,
+                &observer
+            )
+            .check(observer)
 }
 
     // MARK: Utility
