@@ -9,7 +9,7 @@ import Foundation
 import AppKit
 
 @available(macOS 10.2, *)
-public struct Observer: CustomDebugStringConvertible {
+public struct Observer: CustomStringConvertible, CustomDebugStringConvertible {
 
     // MARK: Init
 
