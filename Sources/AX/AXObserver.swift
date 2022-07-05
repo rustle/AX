@@ -123,7 +123,11 @@ public struct Observer: CustomStringConvertible, CustomDebugStringConvertible {
 }
 
 extension Observer: ReferenceConvertible {
-    public typealias ReferenceType = NSObject & NSCopying
+    public final class ReferenceType: NSObject, NSCopying {
+        public func copy(with zone: NSZone? = nil) -> Any {
+            self
+        }
+    }
     public typealias _ObjectiveCType = AXObserver
     public func _bridgeToObjectiveC() -> _ObjectiveCType {
         observer
