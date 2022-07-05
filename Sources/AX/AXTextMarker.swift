@@ -106,7 +106,11 @@ public struct TextMarkerRange: CustomStringConvertible, CustomDebugStringConvert
 
 @available(macOS 11, *)
 extension TextMarker: ReferenceConvertible {
-    public typealias ReferenceType = NSObject & NSCopying
+    public final class ReferenceType: NSObject, NSCopying {
+        public func copy(with zone: NSZone? = nil) -> Any {
+            self
+        }
+    }
     public typealias _ObjectiveCType = AXTextMarker
     public func _bridgeToObjectiveC() -> _ObjectiveCType {
         textMarker
@@ -132,7 +136,11 @@ extension TextMarker: ReferenceConvertible {
 
 @available(macOS 11, *)
 extension TextMarkerRange: ReferenceConvertible {
-    public typealias ReferenceType = NSObject & NSCopying
+    public final class ReferenceType: NSObject, NSCopying {
+        public func copy(with zone: NSZone? = nil) -> Any {
+            self
+        }
+    }
     public typealias _ObjectiveCType = AXTextMarkerRange
     public func _bridgeToObjectiveC() -> _ObjectiveCType {
         textMarkerRange
