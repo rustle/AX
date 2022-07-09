@@ -70,4 +70,8 @@ final class AXTextMarkerRangeTests: XCTestCase {
         bufferStart.deallocate()
         bufferEnd.deallocate()
     }
+    func testCastingFails() throws {
+        let test: Any = NSArray()
+        XCTAssertNil(test as? TextMarkerRange)
+    }
 }

@@ -27,4 +27,8 @@ final class AXObserverTests: XCTestCase {
         XCTAssertEqual(result, .success)
         XCTAssertNotNil(axObserver as? Observer)
     }
+    func testCastingFails() throws {
+        let test: Any = NSArray()
+        XCTAssertNil(test as? Observer)
+    }
 }
