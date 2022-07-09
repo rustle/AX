@@ -1,0 +1,16 @@
+{
+  "object": {
+    "pins": [
+      {
+        "package": "dyldoverlay",
+        "repositoryURL": "https://github.com/rustle/dyldoverlay.git",
+        "state": {
+          "branch": null,
+          "revision": "5bb656d8168712c652458643cbb338708161ce5c",
+          "version": "0.1.0"
+        }
+      }
+    ]
+  },
+  "version": 1
+}

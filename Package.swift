@@ -16,6 +16,8 @@ let package = Package(
             targets: ["ObserverExample"]),
     ],
     dependencies: [
+        .package(url: "https://github.com/rustle/dyldoverlay.git",
+                 from: "0.1.0")
     ],
     targets: [
         .target(
@@ -26,6 +28,9 @@ let package = Package(
             dependencies: ["AX"]),
         .testTarget(
             name: "AXTests",
-            dependencies: ["AX"]),
+            dependencies: [
+                "AX",
+                "dyldoverlay",
+            ]),
     ]
 )
