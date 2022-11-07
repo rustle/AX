@@ -27,7 +27,7 @@ public enum AXError: Error {
     case failure
     /// An illegal argument was passed to the function.
     case illegalArgument
-    ///  The AXUIElementRef passed to the function is invalid.
+    ///  The UIElement passed to the function is invalid.
     case invalidUIElement
     /// The Observer passed to the function is not a valid observer.
     case invalidUIElementObserver
@@ -113,6 +113,40 @@ public enum AXError: Error {
             self = .parameterizedAttributeUnsupported
         @unknown default:
             self = .failure
+        }
+    }
+    public var localizedDescription: String {
+        switch self {
+        case .actionUnsupported:
+            return "AX.AXError.actionUnsupported - The action is not supported by the UIElement."
+        case .apiDisabled:
+            return "AX.AXError.apiDisabled - The accessibility API is disabled."
+        case .attributeUnsupported:
+            return "AX.AXError.attributeUnsupported - The attribute is not supported by the UIElement."
+        case .parameterizedAttributeUnsupported:
+            return "AX.AXError.parameterizedAttributeUnsupported - The parameterized attribute is not supported by the UIElement."
+        case .cannotComplete:
+            return "AX.AXError.cannotComplete - The function cannot complete because messaging failed in some way or because the application with which the function is communicating is busy or unresponsive."
+        case .failure:
+            return "AX.AXError.failure - A system error occurred, such as the failure to allocate an object."
+        case .illegalArgument:
+            return "AX.AXError.illegalArgument - An illegal argument was passed to the function."
+        case .invalidUIElement:
+            return "AX.AXError.invalidUIElement - The UIElement passed to the function is invalid."
+        case .invalidUIElementObserver:
+            return "AX.AXError.invalidUIElementObserver - The Observer passed to the function is not a valid observer."
+        case .notEnoughPrecision:
+            return "AX.AXError.notEnoughPrecision - Not enough precision."
+        case .notificationAlreadyRegistered:
+            return "AX.AXError.notificationAlreadyRegistered - This notification has already been registered."
+        case .notificationUnsupported:
+            return "AX.AXError.notificationUnsupported - The notification is not supported by the UIElement"
+        case .notImplemented:
+            return "AX.AXError.notImplemented - Indicates that the function or method is not implemented (this can be returned if a process does not support the accessibility API)."
+        case .notificationNotRegistered:
+            return "AX.AXError.notificationNotRegistered"
+        case .noValue:
+            return "AX.AXError.noValue - The requested value or UIElement does not exist."
         }
     }
 }
