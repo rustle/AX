@@ -1,7 +1,7 @@
 //
 //  AX.swift
 //
-//  Copyright © 2017-2022 Doug Russell. All rights reserved.
+//  Copyright © 2017-2023 Doug Russell. All rights reserved.
 //
 
 import ApplicationServices.HIServices
@@ -29,7 +29,7 @@ public func isTrusted(promptIfNeeded: Bool) -> Bool {
 }
 private func optionsDictionary(promptIfNeeded: Bool) -> CFDictionary {
     guard promptIfNeeded else {
-        return [:] as CFDictionary
+        return [CFString:CFTypeRef]() as CFDictionary
     }
     return [kAXTrustedCheckOptionPrompt.takeUnretainedValue():kCFBooleanTrue] as CFDictionary
 }
