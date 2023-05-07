@@ -1,7 +1,7 @@
 //
 //  AXError.swift
 //
-//  Copyright © 2017-2022 Doug Russell. All rights reserved.
+//  Copyright © 2017-2023 Doug Russell. All rights reserved.
 //
 
 import ApplicationServices.HIServices
@@ -144,7 +144,7 @@ public enum AXError: Error {
         case .notImplemented:
             return "AX.AXError.notImplemented - Indicates that the function or method is not implemented (this can be returned if a process does not support the accessibility API)."
         case .notificationNotRegistered:
-            return "AX.AXError.notificationNotRegistered"
+            return "AX.AXError.notificationNotRegistered - Indicates that a notification is not registered yet."
         case .noValue:
             return "AX.AXError.noValue - The requested value or UIElement does not exist."
         }
