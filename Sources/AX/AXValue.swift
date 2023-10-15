@@ -120,9 +120,57 @@ public extension AXValue {
     var type: AXValueType {
         AXValueGetType(self)
     }
-    func get<V>(
+    func get(
         _ type: AXValueType,
-        _ result: inout V
+        _ result: inout CGPoint
+    ) throws {
+        guard AXValueGetValue(
+            self,
+            type,
+            &result
+        ) else {
+            throw AXError.failure
+        }
+    }
+    func get(
+        _ type: AXValueType,
+        _ result: inout CGSize
+    ) throws {
+        guard AXValueGetValue(
+            self,
+            type,
+            &result
+        ) else {
+            throw AXError.failure
+        }
+    }
+    func get(
+        _ type: AXValueType,
+        _ result: inout CGRect
+    ) throws {
+        guard AXValueGetValue(
+            self,
+            type,
+            &result
+        ) else {
+            throw AXError.failure
+        }
+    }
+    func get(
+        _ type: AXValueType,
+        _ result: inout ApplicationServices.AXError
+    ) throws {
+        guard AXValueGetValue(
+            self,
+            type,
+            &result
+        ) else {
+            throw AXError.failure
+        }
+    }
+    func get(
+        _ type: AXValueType,
+        _ result: inout CFRange
     ) throws {
         guard AXValueGetValue(
             self,
