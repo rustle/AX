@@ -5,11 +5,10 @@
 //
 
 import AppKit
-import ApplicationServices
-import Cocoa
+@preconcurrency import ApplicationServices
 
 @available(macOS 10.0, *)
-public struct UIElement: CustomStringConvertible, CustomDebugStringConvertible {
+public struct UIElement: Sendable, CustomStringConvertible, CustomDebugStringConvertible {
 
     // MARK: Init
 

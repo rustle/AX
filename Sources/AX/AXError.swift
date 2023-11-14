@@ -10,7 +10,7 @@ import ApplicationServices.HIServices
 // but we want to drop the `success` case
 
 @available(macOS 10.2, *)
-public enum AXError: Error {
+public enum AXError: Error, Sendable {
     /// The action is not supported by the UIElement.
     case actionUnsupported
     /// The accessibility API is disabled.

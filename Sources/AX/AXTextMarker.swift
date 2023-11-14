@@ -8,7 +8,7 @@ import ApplicationServices
 import Cocoa
 
 @available(macOS 11, *)
-public struct TextMarker: CustomStringConvertible, CustomDebugStringConvertible {
+public struct TextMarker: @unchecked Sendable, CustomStringConvertible, CustomDebugStringConvertible {
 
     // MARK: Init
 
@@ -51,7 +51,7 @@ public struct TextMarker: CustomStringConvertible, CustomDebugStringConvertible 
 }
 
 @available(macOS 11, *)
-public struct TextMarkerRange: CustomStringConvertible, CustomDebugStringConvertible {
+public struct TextMarkerRange: @unchecked Sendable, CustomStringConvertible, CustomDebugStringConvertible {
 
     // MARK: Init
 

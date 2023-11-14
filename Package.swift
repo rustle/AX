@@ -22,7 +22,10 @@ let package = Package(
     targets: [
         .target(
             name: "AX",
-            dependencies: []),
+            dependencies: []/*,
+            swiftSettings: [
+                .enableExperimentalFeature("StrictConcurrency")
+            ]*/),
         .executableTarget(
             name: "ObserverExample",
             dependencies: ["AX"]),
