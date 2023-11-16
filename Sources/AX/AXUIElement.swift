@@ -264,7 +264,7 @@ public struct UIElement: Sendable, CustomStringConvertible, CustomDebugStringCon
     ///
     ///
     /// See also `public func AXUIElementIsAttributeSettable(_ element: AXUIElement, _ attribute: CFString, _ settable: UnsafeMutablePointer<DarwinBoolean>) -> AXError`
-    func isSettable(attribute: NSAccessibility.Attribute) throws -> Bool {
+    public func isSettable(attribute: NSAccessibility.Attribute) throws -> Bool {
         var value: DarwinBoolean = false
         let result = AXUIElementIsAttributeSettable(
             element,
@@ -276,7 +276,7 @@ public struct UIElement: Sendable, CustomStringConvertible, CustomDebugStringCon
     ///
     ///
     /// See also `public func AXUIElementSetAttributeValue(_ element: AXUIElement, _ attribute: CFString, _ value: CoreFoundation.CFTypeRef) -> AXError`
-    func set(
+    public func set(
         attribute: NSAccessibility.Attribute,
         value: Any?
     ) throws {
@@ -292,7 +292,7 @@ public struct UIElement: Sendable, CustomStringConvertible, CustomDebugStringCon
     ///
     ///
     /// See also `public func AXUIElementCopyActionNames(_ element: AXUIElement, _ names: UnsafeMutablePointer<CFArray?>) -> AXError`
-    func actions() throws -> [NSAccessibility.Action] {
+    public func actions() throws -> [NSAccessibility.Action] {
         var actions: CFArray?
         return try AXUIElementCopyActionNames(
             element,
@@ -303,7 +303,7 @@ public struct UIElement: Sendable, CustomStringConvertible, CustomDebugStringCon
     ///
     ///
     /// See also `public func AXUIElementCopyActionDescription(_ element: AXUIElement, _ action: CFString, _ description: UnsafeMutablePointer<CFString?>) -> AXError`
-    func description(action: NSAccessibility.Action) throws -> String {
+    public func description(action: NSAccessibility.Action) throws -> String {
         var description: CFString?
         return try AXUIElementCopyActionDescription(
             element,
@@ -315,7 +315,7 @@ public struct UIElement: Sendable, CustomStringConvertible, CustomDebugStringCon
     ///
     ///
     /// See also `public func AXUIElementPerformAction(_ element: AXUIElement, _ action: CFString) -> AXError`
-    func perform(action: NSAccessibility.Action) throws {
+    public func perform(action: NSAccessibility.Action) throws {
         try AXUIElementPerformAction(
             element,
             action as CFString
