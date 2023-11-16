@@ -9,6 +9,7 @@ import ApplicationServices.HIServices
 // It would be nice to just have ApplicationServices.AXError conform to Swift.Error
 // but we want to drop the `success` case
 
+/// Errors produced by AX APIs
 @available(macOS 10.2, *)
 public enum AXError: Error, Sendable {
     /// The action is not supported by the UIElement.
@@ -43,6 +44,7 @@ public enum AXError: Error, Sendable {
     case notificationNotRegistered
     /// The requested value or UIElement does not exist.
     case noValue
+    /// Equivalent `ApplicationServices.AXError`
     public var error: ApplicationServices.AXError {
         switch self {
         case .actionUnsupported:
@@ -77,6 +79,9 @@ public enum AXError: Error, Sendable {
             return .noValue
         }
     }
+    /// Create an error from an `ApplicationServices.AXError`
+    /// - Returns: `AXError` instance for every `ApplicationServices.AXError` case except `.success`.
+    /// In the `.success` case , nil is returned.
     public init?(error: ApplicationServices.AXError) {
         switch error {
         case .success:
@@ -115,6 +120,7 @@ public enum AXError: Error, Sendable {
             self = .failure
         }
     }
+    /// Retrieve the localized description for this error.
     public var localizedDescription: String {
         switch self {
         case .actionUnsupported:
