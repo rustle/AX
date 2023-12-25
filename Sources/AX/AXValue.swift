@@ -55,54 +55,30 @@ public enum Value: Equatable, Sendable {
     public init(value: AXValue) throws {
         switch value.type {
         case .cgPoint:
-            var point = CGPoint(
-                x: 0,
-                y: 0
-            )
-            try value.get(
-                .cgPoint,
-                &point
-            )
+            var point: CGPoint = .zero
+            try value.get(&point)
             self = .point(point)
         case .cgSize:
-            var size = CGSize(
-                width: 0,
-                height: 0
-            )
-            try value.get(
-                .cgSize,
-                &size
-            )
+            var size: CGSize = .zero
+            try value.get(&size)
             self = .size(size)
         case .cgRect:
-            var rect = CGRect(
-                x: 0,
-                y: 0,
-                width: 0,
-                height: 0
-            )
-            try value.get(
-                .cgRect,
-                &rect
-            )
+            var rect: CGRect = .zero
+            try value.get(&rect)
             self = .rect(rect)
         case .cfRange:
-            // TODO: Check for NSNotFound/kCFNotFound in location
-            var range = CFRange(
+            var range: CFRange = .init(
                 location: kCFNotFound,
                 length: 0
             )
-            try value.get(
-                .cfRange,
-                &range
-            )
+            try value.get(&range)
+            guard range.location >= (range.location+range.length) else {
+                throw AXError.failure
+            }
             self = .range(range.location..<range.location+range.length)
         case .axError:
-            var axError = ApplicationServices.AXError.success
-            try value.get(
-                .axError,
-                &axError
-            )
+            var axError: ApplicationServices.AXError = .success
+            try value.get(&axError)
             guard let error = AXError(error: axError) else {
                 throw AXError.failure
             }
@@ -121,63 +97,115 @@ public extension AXValue {
         AXValueGetType(self)
     }
     func get(
-        _ type: AXValueType,
         _ result: inout CGPoint
     ) throws {
         guard AXValueGetValue(
             self,
-            type,
+            .cgPoint,
             &result
         ) else {
             throw AXError.failure
         }
     }
+    func get() throws -> CGPoint {
+        var result: CGPoint = .zero
+        guard AXValueGetValue(
+            self,
+            .cgPoint,
+            &result
+        ) else {
+            throw AXError.failure
+        }
+        return result
+    }
     func get(
-        _ type: AXValueType,
         _ result: inout CGSize
     ) throws {
         guard AXValueGetValue(
             self,
-            type,
+            .cgSize,
             &result
         ) else {
             throw AXError.failure
         }
     }
+    func get() throws -> CGSize {
+        var result: CGSize = .zero
+        guard AXValueGetValue(
+            self,
+            .cgSize,
+            &result
+        ) else {
+            throw AXError.failure
+        }
+        return result
+    }
     func get(
-        _ type: AXValueType,
         _ result: inout CGRect
     ) throws {
         guard AXValueGetValue(
             self,
-            type,
+            .cgRect,
+            &result
+        ) else {
+            throw AXError.failure
+        }
+    }
+    func get() throws {
+        var result: CGRect = .zero
+        guard AXValueGetValue(
+            self,
+            .cgRect,
             &result
         ) else {
             throw AXError.failure
         }
     }
     func get(
-        _ type: AXValueType,
         _ result: inout ApplicationServices.AXError
     ) throws {
         guard AXValueGetValue(
             self,
-            type,
+            .axError,
             &result
         ) else {
             throw AXError.failure
         }
     }
-    func get(
-        _ type: AXValueType,
-        _ result: inout CFRange
-    ) throws {
+    func get() throws -> ApplicationServices.AXError {
+        var result: ApplicationServices.AXError = .success
         guard AXValueGetValue(
             self,
-            type,
+            .axError,
             &result
         ) else {
             throw AXError.failure
         }
+        return result
+    }
+    func get(
+        _ result: inout CFRange
+    ) throws {
+        guard AXValueGetValue(
+            self,
+            .cfRange,
+            &result
+        ) else {
+            throw AXError.failure
+        }
+    }
+    func get() throws -> CFRange {
+        var result: CFRange = .init(
+            location: kCFNotFound,
+            length: 0
+        )
+        guard AXValueGetValue(
+            self,
+            .cfRange,
+            &result
+        ) else {
+            throw AXError.failure
+        }
+        return result
     }
 }
