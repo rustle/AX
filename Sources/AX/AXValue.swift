@@ -72,7 +72,7 @@ public enum Value: Equatable, Sendable {
                 length: 0
             )
             try value.get(&range)
-            guard range.location >= (range.location+range.length) else {
+            guard range.location <= (range.location+range.length) else {
                 throw AXError.failure
             }
             self = .range(range.location..<range.location+range.length)
