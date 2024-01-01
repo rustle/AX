@@ -86,6 +86,17 @@ final class AXValueTests: XCTestCase {
             axValue
         )
     }
+    func testNotFoundRange() throws {
+        var cfRange = CFRange(
+            location: kCFNotFound,
+            length: 0
+        )
+        let axValue = AXValueCreate(
+            .cfRange,
+            &cfRange
+        )!
+        XCTAssertThrowsError(try Value(value: axValue))
+    }
     func testError() throws {
         var axError = ApplicationServices.AXError.illegalArgument
         let axValue = AXValueCreate(
