@@ -1,18 +1,19 @@
 //
 //  AXTextMarker.swift
 //
-//  Copyright © 2017-2022 Doug Russell. All rights reserved.
+//  Copyright © 2017-2026 Doug Russell. All rights reserved.
 //
 
 import ApplicationServices
 import Cocoa
 
 @available(macOS 11, *)
-public struct TextMarker: @unchecked Sendable, CustomStringConvertible, CustomDebugStringConvertible {
+public struct TextMarker: Sendable {
+
+    public nonisolated(unsafe) let textMarker: AXTextMarker
 
     // MARK: Init
 
-    public let textMarker: AXTextMarker
     public init(textMarker: AXTextMarker) {
         self.textMarker = textMarker
     }
@@ -30,15 +31,6 @@ public struct TextMarker: @unchecked Sendable, CustomStringConvertible, CustomDe
         }
     }
 
-    // MARK: Utility
-
-    public var debugDescription: String {
-        String(describing: textMarker)
-    }
-    public var description: String {
-        debugDescription
-    }
-
     // MARK: Data
 
     @inlinable
@@ -51,17 +43,59 @@ public struct TextMarker: @unchecked Sendable, CustomStringConvertible, CustomDe
 }
 
 @available(macOS 11, *)
-public struct TextMarkerRange: @unchecked Sendable, CustomStringConvertible, CustomDebugStringConvertible {
+extension TextMarker: CustomStringConvertible {
+    public var description: String {
+        debugDescription
+    }
+}
 
-    // MARK: Init
+@available(macOS 11, *)
+extension TextMarker: CustomDebugStringConvertible {
+    public var debugDescription: String {
+        String(describing: textMarker)
+    }
+}
 
-    public let textMarkerRange: AXTextMarkerRange
+@available(macOS 11, *)
+extension TextMarker: ReferenceConvertible {
+    public typealias ReferenceType = NSObject & NSCopying
+    public typealias _ObjectiveCType = AXTextMarker
+    public func _bridgeToObjectiveC() -> _ObjectiveCType {
+        textMarker
+    }
+    public static func _forceBridgeFromObjectiveC(
+        _ source: _ObjectiveCType,
+        result: inout TextMarker?
+    ) {
+        result = .init(textMarker: source)
+    }
+    public static func _conditionallyBridgeFromObjectiveC(
+        _ source: _ObjectiveCType,
+        result: inout TextMarker?
+    ) -> Bool {
+        guard CFGetTypeID(source) == AXTextMarkerGetTypeID() else { return false }
+        result = .init(textMarker: source)
+        return true
+    }
+    public static func _unconditionallyBridgeFromObjectiveC(_ source: _ObjectiveCType?) -> TextMarker {
+        .init(textMarker: source!)
+    }
+}
+
+@available(macOS 11, *)
+public struct TextMarkerRange: Sendable {
+    public nonisolated(unsafe) let textMarkerRange: AXTextMarkerRange
+
     public var lowerBound: TextMarker {
         TextMarker(textMarker: AXTextMarkerRangeCopyStartMarker(textMarkerRange))
     }
+
     public var upperBound: TextMarker {
         TextMarker(textMarker: AXTextMarkerRangeCopyEndMarker(textMarkerRange))
     }
+
+    // MARK: Init
+
     public init(textMarkerRange: AXTextMarkerRange) {
         self.textMarkerRange = textMarkerRange
     }
@@ -94,44 +128,19 @@ public struct TextMarkerRange: @unchecked Sendable, CustomStringConvertible, Cus
             }
         }
     }
+}
 
-    // MARK: Utility
-
-    public var debugDescription: String {
-        String(describing: textMarkerRange)
-    }
+@available(macOS 11, *)
+extension TextMarkerRange: CustomStringConvertible {
     public var description: String {
         debugDescription
     }
 }
 
 @available(macOS 11, *)
-extension TextMarker: ReferenceConvertible {
-    public final class ReferenceType: NSObject, NSCopying {
-        public func copy(with zone: NSZone? = nil) -> Any {
-            self
-        }
-    }
-    public typealias _ObjectiveCType = AXTextMarker
-    public func _bridgeToObjectiveC() -> _ObjectiveCType {
-        textMarker
-    }
-    public static func _forceBridgeFromObjectiveC(
-        _ source: _ObjectiveCType,
-        result: inout TextMarker?
-    ) {
-        result = .init(textMarker: source)
-    }
-    public static func _conditionallyBridgeFromObjectiveC(
-        _ source: _ObjectiveCType,
-        result: inout TextMarker?
-    ) -> Bool {
-        guard CFGetTypeID(source) == AXTextMarkerGetTypeID() else { return false }
-        result = .init(textMarker: source)
-        return true
-    }
-    public static func _unconditionallyBridgeFromObjectiveC(_ source: _ObjectiveCType?) -> TextMarker {
-        .init(textMarker: source!)
+extension TextMarkerRange: CustomDebugStringConvertible {
+    public var debugDescription: String {
+        String(describing: textMarkerRange)
     }
 }
 

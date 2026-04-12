@@ -1,7 +1,7 @@
 //
 //  AXObserver.swift
 //
-//  Copyright © 2017-2022 Doug Russell. All rights reserved.
+//  Copyright © 2017-2026 Doug Russell. All rights reserved.
 //
 
 import ApplicationServices.HIServices
@@ -9,11 +9,12 @@ import Foundation
 import AppKit
 
 @available(macOS 10.2, *)
-public struct Observer: @unchecked Sendable, CustomStringConvertible, CustomDebugStringConvertible {
+public struct Observer: Sendable {
 
     // MARK: Init
 
-    public let observer: AXObserver
+    public nonisolated(unsafe) let observer: AXObserver
+
     public init(observer: AXObserver) {
         self.observer = observer
     }
@@ -33,16 +34,6 @@ public struct Observer: @unchecked Sendable, CustomStringConvertible, CustomDebu
             )
             .check(observer)
 }
-
-    // MARK: Utility
-
-    public var debugDescription: String {
-        "<Observer \(String(describing: observer))>"
-    }
-
-    public var description: String {
-        debugDescription
-    }
 
     // MARK: Scheduling
 
@@ -119,6 +110,18 @@ public struct Observer: @unchecked Sendable, CustomStringConvertible, CustomDebu
             notification as CFString
         )
             .check()
+    }
+}
+
+// MARK: Utility
+
+extension Observer: CustomDebugStringConvertible {
+    public var debugDescription: String {
+        "<Observer \(String(describing: observer))>"
+    }
+
+    public var description: String {
+        debugDescription
     }
 }
 

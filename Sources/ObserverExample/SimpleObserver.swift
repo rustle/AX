@@ -1,7 +1,7 @@
 //
 //  SimpleObserver.swift
 //
-//  Copyright © 2017-2022 Doug Russell. All rights reserved.
+//  Copyright © 2017-2026 Doug Russell. All rights reserved.
 //
 
 import AX
@@ -20,7 +20,7 @@ fileprivate func observer_callback(
     print(uiElement as UIElement)
 }
 
-private class Target: NSObject {
+private final class Target: NSObject, Sendable {
     static let target = Target()
     @objc
     func nop() {}

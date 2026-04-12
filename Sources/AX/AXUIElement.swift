@@ -1,18 +1,18 @@
 //
 //  AXUIElement.swift
 //
-//  Copyright © 2017-2022 Doug Russell. All rights reserved.
+//  Copyright © 2017-2026 Doug Russell. All rights reserved.
 //
 
 import AppKit
-@preconcurrency import ApplicationServices
+import ApplicationServices
 
 @available(macOS 10.0, *)
-public struct UIElement: Sendable, CustomStringConvertible, CustomDebugStringConvertible {
+public struct UIElement: Sendable {
 
     // MARK: Init
 
-    public let element: AXUIElement
+    public nonisolated(unsafe) let element: AXUIElement
     public init(element: AXUIElement) {
         self.element = element
     }
@@ -65,55 +65,8 @@ public struct UIElement: Sendable, CustomStringConvertible, CustomDebugStringCon
         }
     }
 
-    public var description: String {
-        var description = [String(describing: element)]
-        description.reserveCapacity(9)
-        if let attrs = try? attributes(), attrs.count > 0 {
-            description.append("Attributes: \(attrs.map(\.rawValue))") // 1
-            func append(
-                _ prefix: String,
-                _ attribute: NSAccessibility.Attribute
-            ) {
-                guard attrs.contains(attribute), let value = try? value(attribute: attribute) else {
-                    return
-                }
-                description.append(prefix)
-                description.append(String(describing: value))
-            }
-            append("Role:", .role) // 2, 3
-            append("Subrole:", .subrole) // 4, 5
-            append("Title:", .title) // 6, 7
-            append("Description:", .description) // 8, 9
-        }
-        return "<UIElement \(description.joined(separator: " "))>"
-    }
-
-    public var debugDescription: String {
-        var description = [String(describing: element)]
-        description.reserveCapacity(11)
-        if let attrs = try? attributes(), !attrs.isEmpty {
-            description.append("Attributes: \(attrs.map(\.rawValue))") // 1
-            func append(
-                _ prefix: String,
-                _ attribute: NSAccessibility.Attribute
-            ) {
-                guard attrs.contains(attribute), let value = try? value(attribute: attribute) else {
-                    return
-                }
-                description.append(prefix)
-                description.append(String(describing: value))
-            }
-            append("Role:", .role) // 2, 3
-            append("Subrole:", .subrole) // 4, 5
-            append("Title:", .title) // 6, 7
-            append("Description:", .description) // 8, 9
-            append("Value:", .value) // 10, 11
-        }
-        return "<UIElement \(description.joined(separator: "\n"))>"
-    }
-
-    public var debugInfo: [String:Any] {
-        var info = [String:Any]()
+    public var debugInfo: [String:any Sendable] {
+        var info = [String:any Sendable]()
         if let attrs = try? attributes(), !attrs.isEmpty {
             info["Attributes"] = attrs.map(\.rawValue)
             func append(_ attribute: NSAccessibility.Attribute) {
@@ -336,6 +289,57 @@ extension UIElement: Hashable {
     }
     public func hash(into hasher: inout Hasher) {
         hasher.combine(CFHash(element))
+    }
+}
+
+extension UIElement: CustomStringConvertible {
+    public var description: String {
+        var description = [String(describing: element)]
+        description.reserveCapacity(9)
+        if let attrs = try? attributes(), attrs.count > 0 {
+            description.append("Attributes: \(attrs.map(\.rawValue))") // 1
+            func append(
+                _ prefix: String,
+                _ attribute: NSAccessibility.Attribute
+            ) {
+                guard attrs.contains(attribute), let value = try? value(attribute: attribute) else {
+                    return
+                }
+                description.append(prefix)
+                description.append(String(describing: value))
+            }
+            append("Role:", .role) // 2, 3
+            append("Subrole:", .subrole) // 4, 5
+            append("Title:", .title) // 6, 7
+            append("Description:", .description) // 8, 9
+        }
+        return "<UIElement \(description.joined(separator: " "))>"
+    }
+}
+
+extension UIElement: CustomDebugStringConvertible {
+    public var debugDescription: String {
+        var description = [String(describing: element)]
+        description.reserveCapacity(11)
+        if let attrs = try? attributes(), !attrs.isEmpty {
+            description.append("Attributes: \(attrs.map(\.rawValue))") // 1
+            func append(
+                _ prefix: String,
+                _ attribute: NSAccessibility.Attribute
+            ) {
+                guard attrs.contains(attribute), let value = try? value(attribute: attribute) else {
+                    return
+                }
+                description.append(prefix)
+                description.append(String(describing: value))
+            }
+            append("Role:", .role) // 2, 3
+            append("Subrole:", .subrole) // 4, 5
+            append("Title:", .title) // 6, 7
+            append("Description:", .description) // 8, 9
+            append("Value:", .value) // 10, 11
+        }
+        return "<UIElement \(description.joined(separator: "\n"))>"
     }
 }
 

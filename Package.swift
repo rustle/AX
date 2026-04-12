@@ -1,4 +1,4 @@
-// swift-tools-version:5.9
+// swift-tools-version:6.2
 
 import PackageDescription
 
@@ -22,10 +22,7 @@ let package = Package(
     targets: [
         .target(
             name: "AX",
-            dependencies: []/*,
-            swiftSettings: [
-                .enableExperimentalFeature("StrictConcurrency")
-            ]*/),
+            dependencies: []),
         .executableTarget(
             name: "ObserverExample",
             dependencies: ["AX"]),
@@ -35,5 +32,6 @@ let package = Package(
                 "AX",
                 "dyldoverlay",
             ]),
-    ]
+    ],
+    swiftLanguageModes: [.v6]
 )
