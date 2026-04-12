@@ -72,7 +72,7 @@ public enum Value: Equatable, Sendable {
                 length: 0
             )
             try value.get(&range)
-            guard range.location != kCFNotFound else {
+            guard range.location != kCFNotFound, range.location != NSNotFound else {
                 throw AXError.noValue
             }
             guard range.location <= (range.location+range.length) else {
