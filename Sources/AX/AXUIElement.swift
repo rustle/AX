@@ -9,13 +9,13 @@ import ApplicationServices
 
 @available(macOS 10.0, *)
 public struct UIElement: Sendable {
-
     // MARK: Init
 
     public nonisolated(unsafe) let element: AXUIElement
     public init(element: AXUIElement) {
         self.element = element
     }
+
     /// Accessibility element that provides access to system attributes.
     ///
     /// Useful for finding the focused accessibility element regardless of which application
@@ -47,6 +47,23 @@ public struct UIElement: Sendable {
             &element
         )
         return UIElement(element: try result.check(element))
+    }
+
+    private static let transportRepresentationLookup = try? TransportRepresentationLookup()
+    private static let createTransportRepresentationLookup = try? CreateTransportRepresentationLookup()
+
+    public func transportRepresentation() throws -> Data {
+        guard let transportRep = Self.transportRepresentationLookup else {
+            throw AXError.transportRepresentationNotAvailable
+        }
+        return try transportRep(element: element)
+    }
+
+    public init(transportRepresentation: Data) throws {
+        guard let createTransportRep = Self.createTransportRepresentationLookup else {
+            throw AXError.transportRepresentationNotAvailable
+        }
+        self.element = try createTransportRep(data: transportRepresentation)
     }
 
     // MARK: Utility

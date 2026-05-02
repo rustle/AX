@@ -44,6 +44,8 @@ public enum AXError: Error, Sendable {
     case notificationNotRegistered
     /// The requested value or UIElement does not exist.
     case noValue
+    ///
+    case transportRepresentationNotAvailable
     /// Equivalent `ApplicationServices.AXError`
     public var error: ApplicationServices.AXError {
         switch self {
@@ -76,6 +78,8 @@ public enum AXError: Error, Sendable {
         case .notificationNotRegistered:
             return .notificationNotRegistered
         case .noValue:
+            return .noValue
+        case .transportRepresentationNotAvailable:
             return .noValue
         }
     }
@@ -153,6 +157,8 @@ public enum AXError: Error, Sendable {
             return "AX.AXError.notificationNotRegistered - Indicates that a notification is not registered yet."
         case .noValue:
             return "AX.AXError.noValue - The requested value or UIElement does not exist."
+        case .transportRepresentationNotAvailable:
+            return "AX.AXError.transportRepresentationNotAvailable - Opaque byte representation not available."
         }
     }
 }

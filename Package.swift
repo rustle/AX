@@ -15,10 +15,7 @@ let package = Package(
             name: "ObserverExample",
             targets: ["ObserverExample"]),
     ],
-    dependencies: [
-        .package(url: "https://github.com/rustle/dyldoverlay.git",
-                 from: "0.1.0")
-    ],
+    dependencies: [],
     targets: [
         .target(
             name: "AX",
@@ -30,7 +27,6 @@ let package = Package(
             name: "AXTests",
             dependencies: [
                 "AX",
-                "dyldoverlay",
             ]),
     ],
     swiftLanguageModes: [.v6]

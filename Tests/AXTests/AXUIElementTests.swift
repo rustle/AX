@@ -6,7 +6,6 @@
 
 import XCTest
 @testable import AX
-import dyldoverlay
 import Cocoa
 
 @available(macOS 10.0, *)
@@ -19,7 +18,7 @@ final class AXUIElementTests: XCTestCase {
         let CreateWithDataAndPid = try symbol(
             "_AXUIElementCreateWithDataAndPid",
             (@convention(c) (CFData, Int32, pid_t, pid_t) -> AXUIElement).self
-        ).get()
+        )
         XCTAssertNotNil(CreateWithDataAndPid)
         let axUIElement1 = CreateWithDataAndPid(
             "boop".data(using: .utf8)! as CFData,
