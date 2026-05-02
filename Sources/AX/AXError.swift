@@ -11,7 +11,7 @@ import ApplicationServices.HIServices
 
 /// Errors produced by AX APIs
 @available(macOS 10.2, *)
-public enum AXError: Error, Sendable {
+public enum AXError: Error, Codable, Sendable {
     /// The action is not supported by the UIElement.
     case actionUnsupported
     /// The accessibility API is disabled.

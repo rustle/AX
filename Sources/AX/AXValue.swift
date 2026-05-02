@@ -8,7 +8,7 @@ import ApplicationServices
 import Cocoa
 
 @available(macOS 10.11, *)
-public enum Value: Equatable, Sendable {
+public enum Value: Codable, Equatable, Sendable {
     case point(CGPoint)
     case size(CGSize)
     case rect(CGRect)

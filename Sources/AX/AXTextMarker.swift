@@ -43,6 +43,19 @@ public struct TextMarker: Sendable {
 }
 
 @available(macOS 11, *)
+extension TextMarker: Codable {
+    public init(from decoder: any Decoder) throws {
+        let container = try decoder.singleValueContainer()
+        try self.init(data: container.decode(Data.self))
+    }
+
+    public func encode(to encoder: any Encoder) throws {
+        var container = encoder.singleValueContainer()
+        try container.encode(withUnsafeBytes { Data($0) })
+    }
+}
+
+@available(macOS 11, *)
 extension TextMarker: CustomStringConvertible {
     public var description: String {
         debugDescription
@@ -127,6 +140,28 @@ public struct TextMarkerRange: Sendable {
                 )
             }
         }
+    }
+}
+
+@available(macOS 11, *)
+extension TextMarkerRange: Codable {
+    private enum CodingKeys: String, CodingKey {
+        case lowerBound
+        case upperBound
+    }
+
+    public init(from decoder: any Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        try self.init(
+            lowerBound: container.decode(Data.self, forKey: .lowerBound),
+            upperBound: container.decode(Data.self, forKey: .upperBound)
+        )
+    }
+
+    public func encode(to encoder: any Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(lowerBound.withUnsafeBytes { Data($0) }, forKey: .lowerBound)
+        try container.encode(upperBound.withUnsafeBytes { Data($0) }, forKey: .upperBound)
     }
 }
 

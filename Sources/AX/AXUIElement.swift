@@ -388,3 +388,24 @@ extension UIElement: ReferenceConvertible {
         .init(element: source!)
     }
 }
+
+@available(macOS 10.0, *)
+extension UIElement: Codable {
+    public init(from decoder: any Decoder) throws {
+        let container = try decoder.singleValueContainer()
+        let data = try container.decode(Data.self)
+        guard let createTransportRep = Self.createTransportRepresentationLookup else {
+            throw AXError.transportRepresentationNotAvailable
+        }
+        self.element = try createTransportRep(data: data)
+    }
+
+    public func encode(to encoder: any Encoder) throws {
+        guard let transportRep = Self.transportRepresentationLookup else {
+            throw AXError.transportRepresentationNotAvailable
+        }
+        let data = try transportRep(element: element)
+        var container = encoder.singleValueContainer()
+        try container.encode(data)
+    }
+}
