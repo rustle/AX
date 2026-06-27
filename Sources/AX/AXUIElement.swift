@@ -257,6 +257,25 @@ public struct UIElement: Sendable {
             .check()
     }
 
+    // MARK: Messaging Timeout
+
+    /// Set timeout, in seconds. Used when messaging this element.
+    ///
+    /// Setting the timeout on the `systemWide()` element establishes the **default** timeout for every
+    /// element that does not carry its own. A single call bounds messaging for all applications.
+    /// A hung target may otherwise pin the calling thread up to the full default (6s).
+    ///
+    /// Pass `nil` to restore the system default.
+    ///
+    /// See also `public func AXUIElementSetMessagingTimeout(_ element: AXUIElement, _ timeoutInSeconds: Float) -> AXError`
+    public func setMessagingTimeout(_ seconds: Double? = nil) throws {
+        try AXUIElementSetMessagingTimeout(
+            element,
+            Float(seconds ?? 0.0)
+        )
+            .check()
+    }
+
     // MARK: Actions
 
     ///
